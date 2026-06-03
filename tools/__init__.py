@@ -44,6 +44,8 @@ def dispatch(name: str, inputs: dict) -> str:
 # Side-effect imports — each module's @tool decorators self-register into _registry
 import importlib
 for _mod in ["tools.inventory_tool", "tools.patch_tool", "tools.backup_tool",
-             "tools.security_tool", "tools.docs_tool", "tools.vm_tool",
-             "tools.admin_tool", "tools.guard_tool", "tools.audit_tool"]:
+             "tools.pbs_repair_tool", "tools.security_tool", "tools.docs_tool",
+             "tools.vm_tool", "tools.admin_tool", "tools.guard_tool", "tools.audit_tool",
+             "tools.daily_health_check", "tools.disk_prediction", "tools.threat_detection",
+             "tools.disk_health"]:
     importlib.import_module(_mod)
