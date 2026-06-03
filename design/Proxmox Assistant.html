@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proxmox Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assistant.css">
+</head>
+<body>
+
+<div class="app" data-screen-label="Proxmox Assistant">
+
+  <!-- header -->
+  <header class="hdr">
+    <div class="hdr-row">
+      <div class="mark">◈</div>
+      <div class="brand"><b>Proxmox Assistant</b><span>node ${node} · agent .134</span></div>
+      <span class="spacer"></span>
+      <span class="conn"><span class="dot ok pulse"></span>online · <span id="aiProvider">Claude</span></span>
+      <button class="iconbtn" id="newChat" title="New chat">✎</button>
+      <button class="iconbtn" id="gear" title="Settings">⚙</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </header>
+
+  <!-- chat stream -->
+  <main class="stream" id="stream">
+    <div class="welcome" id="welcome">
+      <div class="big-mark">◈</div>
+      <h1>How can I help with your homelab?</h1>
+      <p>I'm watching node <b style="color:var(--text-2)">192.168.0.91</b> from the Pi. Ask in plain English — I'll run the tools.</p>
+      <div class="suggest">
+        <button class="sug go" data-tool="checkup"><span class="g">◆</span>Run a full health check<span class="ar">→</span></button>
+        <button class="sug" data-tool="inventory"><span class="g">▤</span>What's running right now?<span class="ar">→</span></button>
+        <button class="sug" data-tool="patches"><span class="g">⬇</span>Any patches I should worry about?<span class="ar">→</span></button>
+        <button class="sug" data-tool="backups"><span class="g">⛁</span>Are my backups healthy?<span class="ar">→</span></button>
+        <button class="sug" data-tool="security"><span class="g">⚿</span>Run a security audit<span class="ar">→</span></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- dock: console strip + composer -->
+  <div class="dock">
+    <div class="console collapsed" id="console">
+      <div class="console-head" id="consoleHead">
+        <span class="lbl"><span class="dot ok pulse"></span>tool log</span>
+        <span class="sp"></span>
+        <span class="cnt" id="consoleCnt">0 calls</span>
+        <span class="chev">▾</span>
+      </div>
+      <div class="console-body" id="consoleBody">
+        <div class="idle">idle — waiting for a prompt</div>
+      </div>
+    </div>
+    <div class="composer">
+      <textarea id="ta" rows="1" placeholder="Ask anything — “are my backups healthy?”"></textarea>
+      <button class="sendbtn" id="sendBtn" disabled>➜</button>
+    </div>
+    <div class="dock-hint">agent runs read-only tools automatically · actions ask first</div>
+  </div>
+
+</div>
+
+<!-- backups drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Backup report">
+  <div class="grab"></div>
+  <div class="drawer-head">
+    <span class="ti">Backup health</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="closeDrawer">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn primary" onclick="toast('Queued backup for 2 stale guests.')">Back up stale (2)</button>
+    <button class="btn ghost" id="closeDrawer2" onclick="closeDrawer()">Close</button>
+  </div>
+</aside>
+
+<!-- settings sheet -->
+<div class="sheet" id="sheet">
+  <div class="sheet-inner">
+    <div class="sheet-head">
+      <span class="ti">Settings</span>
+      <span class="sp"></span>
+      <button class="iconbtn" id="closeSheet">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="section">
+        <div class="lab">LLM provider</div>
+        <div class="seg" id="segProvider"></div>
+        <div class="field" id="provFields"></div>
+      </div>
+      <div class="section">
+        <div class="lab">Connection</div>
+        <div class="field" id="connFields"></div>
+      </div>
+      <div class="section">
+        <div class="lab">.env preview · served from the Pi</div>
+        <div class="envblock" id="envPreview"></div>
+      </div>
+      <button class="btn primary" id="saveSettings" style="justify-content:center">Save &amp; reload agent</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="assistant.js"></script>
+<script>
+  // tiny token swap in the header brand line
+  document.querySelector('.brand span').innerHTML =
+    'node ' + DATA.node + ' · agent .134';
+</script>
+</body>
+</html>

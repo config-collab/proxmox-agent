@@ -1,0 +1,234 @@
+/* ============================================================
+   Proxmox Assistant — Wireframe kit
+   Low-fi sketch style. White-pen-on-charcoal frames signal the
+   eventual DARK theme; paper canvas + hand strokes keep it lo-fi.
+   ============================================================ */
+
+:root{
+  --paper:#f3efe6;
+  --paper-2:#ece7da;
+  --ink:#2b2a26;
+  --ink-soft:#6b675c;
+  --pencil:#3b6ea5;      /* annotation blue */
+  --rule:#c9c2b2;
+
+  /* dark frame palette (the product's real skin, sketched) */
+  --d-bg:#15171c;
+  --d-panel:#1d2027;
+  --d-panel-2:#23272f;
+  --d-line:#3a3f49;
+  --d-stroke:#c9ccd3;    /* "white pen" */
+  --d-text:#e8eaee;
+  --d-muted:#8a8f99;
+  --d-bar:#363b44;
+  --d-bar-2:#2b3039;
+
+  --accent:#e8833a;      /* proxmox-ish orange */
+  --crit:#e5534b;
+  --high:#e8833a;
+  --med:#e3b341;
+  --low:#5aa873;
+  --ok:#5aa873;
+
+  --sketch: 255px 15px 225px 15px/15px 225px 15px 255px;
+  --sketch-2: 15px 225px 15px 255px/255px 15px 225px 15px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(0,0,0,.025) 31px 32px),
+    var(--paper);
+  color:var(--ink);
+  font-family:'Architects Daughter', 'Comic Sans MS', cursive;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- page chrome ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:28px 22px 90px}
+.masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:6px}
+.masthead h1{font-size:30px;margin:0;letter-spacing:.4px}
+.masthead .sub{font-size:15px;color:var(--ink-soft);margin-top:2px}
+.legend{font-size:13px;color:var(--ink-soft);display:flex;gap:16px;flex-wrap:wrap}
+.legend b{color:var(--ink)}
+.swatch{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+
+hr.rule{border:none;border-top:2px dashed var(--rule);margin:16px 0 18px}
+
+/* ---------- controls ---------- */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{
+  font-family:inherit;font-size:15px;color:var(--ink);
+  background:var(--paper-2);
+  border:2px solid var(--ink);
+  border-radius:var(--sketch);
+  padding:6px 14px;cursor:pointer;transition:transform .08s;
+}
+.tab:nth-child(even){border-radius:var(--sketch-2)}
+.tab:hover{transform:translateY(-1px) rotate(-.4deg)}
+.tab.active{background:var(--ink);color:var(--paper)}
+.spacer{flex:1}
+.toggle{
+  font-family:inherit;font-size:14px;color:var(--ink);
+  background:transparent;border:2px solid var(--ink);
+  border-radius:var(--sketch-2);padding:6px 12px;cursor:pointer;
+}
+.toggle.off{opacity:.45}
+
+/* ---------- stage ---------- */
+.screen{display:none}
+.screen.active{display:block}
+.screen-head{font-size:17px;margin:4px 2px 14px;color:var(--ink)}
+.screen-head .q{color:var(--pencil)}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+@media(max-width:840px){.stage{grid-template-columns:1fr}}
+
+.col-label{font-size:16px;margin:0 0 9px 4px}
+.col-label .pill{
+  display:inline-block;background:var(--ink);color:var(--paper);
+  font-size:12px;padding:2px 9px;border-radius:20px;margin-right:8px;vertical-align:1px;
+}
+.col-note{font-size:13px;color:var(--ink-soft);margin:0 4px 12px;min-height:18px}
+
+/* ---------- the device frame (dark, sketched) ---------- */
+.frame{
+  background:var(--d-bg);
+  border:2.5px solid var(--ink);
+  border-radius:26px;
+  padding:14px 13px 16px;
+  box-shadow:5px 6px 0 rgba(43,42,38,.13);
+  color:var(--d-text);
+  font-family:'Architects Daughter','Comic Sans MS',cursive;
+}
+.frame .statusbar{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--d-muted);padding:0 6px 8px}
+.frame .dots{display:flex;gap:5px}
+.frame .dots i{width:7px;height:7px;border-radius:50%;background:var(--d-line);display:block}
+
+/* generic dark UI bits inside the frame */
+.d-box{
+  background:var(--d-panel);
+  border:1.5px solid var(--d-line);
+  border-radius:14px;
+  padding:12px;margin:9px 0;
+}
+.d-box.alt{background:var(--d-panel-2)}
+.d-box.sketchy{border-style:dashed;border-radius:var(--sketch)}
+.row{display:flex;gap:10px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.row.between{justify-content:space-between}
+.col{display:flex;flex-direction:column;gap:8px}
+.grow{flex:1}
+
+.bar{height:9px;border-radius:6px;background:var(--d-bar);display:block}
+.bar.sm{height:7px}
+.bar.lg{height:12px}
+.bar.lite{background:var(--d-bar-2)}
+.bar.stroke{background:var(--d-stroke);opacity:.85}
+.w90{width:90%}.w80{width:80%}.w70{width:70%}.w60{width:60%}.w50{width:50%}
+.w40{width:40%}.w35{width:35%}.w30{width:30%}.w25{width:25%}.w20{width:20%}.w15{width:15%}
+
+.lbl{font-size:13px;color:var(--d-text)}
+.lbl.muted{color:var(--d-muted)}
+.kicker{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--d-muted)}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;font-size:12px;
+  border:1.5px solid var(--d-line);border-radius:20px;padding:3px 10px;color:var(--d-text);
+}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.dot.ok{background:var(--ok)}.dot.warn{background:var(--med)}.dot.bad{background:var(--crit)}.dot.acc{background:var(--accent)}
+
+.icon{width:30px;height:30px;border-radius:9px;border:1.5px solid var(--d-line);display:grid;place-items:center;font-size:15px;flex:none;color:var(--d-muted)}
+.icon.big{width:38px;height:38px;border-radius:11px;font-size:18px}
+
+/* avatar bubbles */
+.av{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--d-line);display:grid;place-items:center;font-size:12px;color:var(--d-muted);flex:none}
+.av.ai{border-style:solid;border-color:var(--accent);color:var(--accent)}
+
+/* chat bubbles */
+.bubble{border:1.5px solid var(--d-line);border-radius:14px;padding:10px 12px;max-width:84%}
+.bubble.me{margin-left:auto;background:var(--d-panel-2);border-radius:14px 14px 4px 14px}
+.bubble.ai{background:var(--d-panel);border-radius:14px 14px 14px 4px}
+
+/* the big "google" chat input */
+.searchbox{
+  display:flex;align-items:center;gap:10px;
+  background:var(--d-panel);border:2px solid var(--d-stroke);
+  border-radius:30px;padding:13px 16px;
+}
+.searchbox.sketchy{border-radius:var(--sketch);border-style:solid}
+.send{width:34px;height:34px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:#1b1206;font-size:15px;flex:none}
+
+/* terminal / console */
+.term{
+  background:#0e1014;border:1.5px solid var(--d-line);border-radius:12px;
+  padding:11px 12px;font-family:'Spline Sans Mono',ui-monospace,monospace;
+  font-size:11.5px;color:#aeb6c2;line-height:1.7;
+}
+.term .ln{white-space:pre-wrap;word-break:break-word}
+.term .t{color:var(--accent)}
+.term .ok{color:var(--ok)}
+.term .mut{color:#5d656f}
+.term .cur{color:var(--d-stroke)}
+.term-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--d-muted);margin-bottom:7px;font-family:'Architects Daughter',cursive}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;color:var(--d-muted);font-weight:400;font-size:11px;letter-spacing:.5px;padding:6px 8px;border-bottom:1.5px solid var(--d-line)}
+.tbl td{padding:8px;border-bottom:1px solid var(--d-bar-2);color:var(--d-text)}
+.tbl tr:last-child td{border-bottom:none}
+.mono{font-family:'Spline Sans Mono',monospace;font-size:11.5px}
+
+/* severity row (icons + labels) */
+.sev{display:flex;align-items:flex-start;gap:11px;padding:11px 4px;border-bottom:1px solid var(--d-bar-2)}
+.sev:last-child{border-bottom:none}
+.sev .glyph{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:14px;flex:none;font-family:'Spline Sans Mono',monospace;font-weight:700}
+.sev .g-crit{background:rgba(229,83,75,.16);color:var(--crit);border:1.5px solid var(--crit)}
+.sev .g-high{background:rgba(232,131,58,.16);color:var(--high);border:1.5px solid var(--high)}
+.sev .g-med{background:rgba(227,179,65,.16);color:var(--med);border:1.5px solid var(--med)}
+.sev .g-low{background:rgba(90,168,115,.16);color:var(--low);border:1.5px solid var(--low)}
+.sev-label{font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+.sev-label.crit{color:var(--crit)}.sev-label.high{color:var(--high)}.sev-label.med{color:var(--med)}.sev-label.low{color:var(--low)}
+
+/* status cards (dashboard) */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--d-panel);border:1.5px solid var(--d-line);border-radius:14px;padding:12px}
+.card.sketchy{border-style:dashed;border-radius:var(--sketch-2)}
+.card .big{font-size:22px;color:var(--d-text);margin:6px 0 2px}
+
+/* segmented control */
+.seg{display:flex;border:1.5px solid var(--d-line);border-radius:11px;overflow:hidden}
+.seg div{flex:1;text-align:center;font-size:12.5px;padding:8px 4px;color:var(--d-muted);border-right:1.5px solid var(--d-line)}
+.seg div:last-child{border-right:none}
+.seg div.on{background:var(--accent);color:#1b1206}
+
+/* env var rows */
+.env{display:flex;align-items:center;gap:9px;font-size:12px;padding:7px 0;border-bottom:1px solid var(--d-bar-2)}
+.env .k{font-family:'Spline Sans Mono',monospace;color:var(--d-muted);width:42%;font-size:11px}
+.env .v{flex:1;background:var(--d-panel-2);border:1.5px solid var(--d-line);border-radius:7px;padding:5px 8px;color:var(--d-text);font-family:'Spline Sans Mono',monospace;font-size:11px}
+
+/* drawer (direction B) */
+.drawer-wrap{position:relative}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:18px}
+.drawer{position:absolute;left:8px;right:8px;bottom:8px;top:54px;background:var(--d-bg);border:2px solid var(--d-stroke);border-radius:18px 18px 16px 16px;padding:12px;overflow:hidden}
+.grab{width:46px;height:5px;border-radius:5px;background:var(--d-line);margin:2px auto 10px}
+
+/* footer console strip (direction B) */
+.consolestrip{position:sticky;bottom:0;background:#0e1014;border-top:1.5px solid var(--d-line);border-radius:0 0 14px 14px;margin:10px -13px -16px;padding:8px 13px}
+
+/* annotation callouts on the paper */
+.note{
+  font-size:13px;color:var(--pencil);position:relative;margin:10px 4px 0;
+  padding-left:18px;line-height:1.45;
+}
+.note::before{content:"↳";position:absolute;left:0;top:0}
+.note.hideable{display:block}
+.annot-off .note.hideable{display:none}
+
+.caption{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:9px}
+
+/* tiny utility */
+.mt{margin-top:10px}.mt0{margin-top:0}.mb0{margin-bottom:0}.center{text-align:center}
+.smol{font-size:11px}

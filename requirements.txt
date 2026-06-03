@@ -1,0 +1,2 @@
+paramiko>=3.4
+rank_bm25>=0.2

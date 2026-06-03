@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Proxmox Assistant</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assistant.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- header -->
+  <header class="hdr">
+    <div class="hdr-row">
+      <img src="https://www.proxmox.com/images/proxmox/Proxmox_logo_standard_hex_400px.png"
+           alt="Proxmox" class="pve-logo" id="pveLogoImg">
+      <span class="spacer"></span>
+      <span class="conn"><span class="dot ok pulse"></span><span id="aiProvider">&mdash;</span></span>
+      <button class="iconbtn theme-btn" id="themeBtn" title="Toggle light/dark">&#9790;</button>
+      <button class="iconbtn" id="auditBtn" title="Audit log">&#9783;</button>
+      <button class="iconbtn" id="newChat" title="New chat">&#10000;</button>
+      <button class="iconbtn suggest" id="gear" title="Settings">&#9881;</button>
+    </div>
+    <div class="hdr-sub">
+      <span id="brandSub">connecting&hellip;</span>
+    </div>
+    <div class="chips" id="chips"></div>
+  </header>
+
+  <!-- chat stream -->
+  <main class="stream" id="stream">
+    <div class="welcome" id="welcome">
+      <div class="big-mark">&#9672;</div>
+      <h1>How can I help with your homelab?</h1>
+      <p>Connected to <b id="welcomeNode" style="color:var(--text-2)">loading&hellip;</b> &mdash; ask in plain English.</p>
+      <div class="suggest">
+        <button class="sug go" data-tool="checkup"><span class="g">&#9670;</span>Run a full health check<span class="ar">&rarr;</span></button>
+        <button class="sug" data-tool="inventory"><span class="g">&#9636;</span>What's running right now?<span class="ar">&rarr;</span></button>
+        <button class="sug" data-tool="patches"><span class="g">&#11015;</span>Any patches I should worry about?<span class="ar">&rarr;</span></button>
+        <button class="sug" data-tool="backups"><span class="g">&#9795;</span>Are my backups healthy?<span class="ar">&rarr;</span></button>
+        <button class="sug" data-tool="security"><span class="g">&#9901;</span>Run a security audit<span class="ar">&rarr;</span></button>
+        <button class="sug" data-tool="helpers"><span class="g">&#9670;</span>Find &amp; install a community script<span class="ar">&rarr;</span></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- dock -->
+  <div class="dock">
+    <div class="console collapsed" id="console">
+      <div class="console-head" id="consoleHead">
+        <span class="lbl"><span class="dot ok pulse"></span>tool log</span>
+        <span class="sp"></span>
+        <span class="cnt" id="consoleCnt">0 calls</span>
+        <span class="chev">&#9662;</span>
+      </div>
+      <div class="console-body" id="consoleBody">
+        <div class="idle">idle &mdash; waiting for a prompt</div>
+      </div>
+    </div>
+    <div class="composer">
+      <textarea id="ta" rows="1" placeholder="Ask anything &mdash; &quot;stop plex&quot;, &quot;install vaultwarden&quot;, &quot;are my backups ok?&quot;"></textarea>
+      <button class="sendbtn" id="sendBtn" disabled>&#10140;</button>
+    </div>
+    <div class="dock-hint">🔒 Decision-support tool: you approve every change. Full audit trail. No autonomous actions.</div>
+  </div>
+
+</div>
+
+<!-- backups drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Backup report">
+  <div class="grab"></div>
+  <div class="drawer-head">
+    <span class="ti">Backup health</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="closeDrawer">&#10005;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn primary" onclick="toast('Queued backup for stale guests.')">Back up stale</button>
+    <button class="btn ghost" onclick="closeDrawer()">Close</button>
+  </div>
+</aside>
+
+<!-- audit drawer -->
+<aside class="drawer" id="auditDrawer" aria-label="Audit log">
+  <div class="grab"></div>
+  <div class="drawer-head">
+    <span class="ti">Audit log</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="closeAudit">&#10005;</button>
+  </div>
+  <div class="drawer-body" id="auditBody"></div>
+  <div class="drawer-foot">
+    <button class="btn ghost sm" id="auditDownload">Download JSONL</button>
+    <button class="btn ghost" onclick="closeAuditDrawer()">Close</button>
+  </div>
+</aside>
+
+<!-- settings sheet -->
+<div class="sheet" id="sheet">
+  <div class="sheet-inner">
+    <div class="sheet-head">
+      <span class="ti">Settings</span>
+      <span class="sp"></span>
+      <span id="securityBadge" class="security-badge"></span>
+      <button class="iconbtn" id="closeSheet">&#10005;</button>
+    </div>
+    <div class="sheet-body">
+      <div class="section">
+        <div class="lab">Security level</div>
+        <div class="seg" id="segAutonomy"></div>
+        <div class="autonomy-desc" id="autonomyDesc"></div>
+      </div>
+      <div class="section">
+        <div class="lab">Pre-change protection</div>
+        <div class="seg" id="segProtection"></div>
+        <div class="autonomy-desc" id="protectionDesc"></div>
+      </div>
+      <div class="section">
+        <div class="lab">🔒 Proxmox host protection</div>
+        <div class="seg" id="segPveProtection"></div>
+        <div class="autonomy-desc" id="pveProtectionDesc"></div>
+      </div>
+      <div class="section">
+        <div class="lab">LLM provider</div>
+        <div class="seg" id="segProvider"></div>
+        <div class="field" id="provFields"></div>
+      </div>
+      <div class="section">
+        <div class="lab">Connection</div>
+        <div class="field" id="connFields"></div>
+      </div>
+      <div class="section">
+        <div class="lab">Alerts &middot; push via ntfy.sh</div>
+        <div class="field" id="alertFields"></div>
+      </div>
+      <div class="section">
+        <div class="lab">.env preview</div>
+        <div class="envblock" id="envPreview"></div>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn primary" id="saveSettings" style="flex:1;justify-content:center">Save &amp; reload agent</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="assistant.js"></script>
+</body>
+</html>

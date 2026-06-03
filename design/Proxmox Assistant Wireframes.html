@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proxmox Assistant — Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <h1>Proxmox Assistant — Wireframes</h1>
+      <div class="sub">Chat-first · single scrolling column · roomy · dark theme · phone-readable</div>
+    </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#15171c;border:1px solid #2b2a26"></span><b>charcoal frame</b> = the real dark UI</span>
+      <span><span class="swatch" style="background:#e8833a"></span>accent</span>
+      <span><span class="swatch" style="background:#3b6ea5"></span>annotation</span>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="toolbar">
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-s="home">Home</button>
+      <button class="tab" data-s="chat">Chat + live tool</button>
+      <button class="tab" data-s="inventory">Inventory</button>
+      <button class="tab" data-s="patches">Patches</button>
+      <button class="tab" data-s="backups">Backups</button>
+      <button class="tab" data-s="security">Security</button>
+      <button class="tab" data-s="settings">Settings</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="toggle" id="annotBtn">Annotations: ON</button>
+  </div>
+
+  <!-- =================== HOME =================== -->
+  <section class="screen active" data-screen="home">
+    <div class="screen-head">Landing screen — <span class="q">where does the user start, and how loud is the dashboard?</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline conversational</div>
+        <div class="col-note">Google-like. Calm status tiles, everything funnels to one big chat box.</div>
+        <div class="frame">
+          <div class="statusbar"><span>9:41 · pve-assistant.lan</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div style="text-align:center;padding:14px 0 4px">
+            <div class="row" style="justify-content:center;gap:9px">
+              <div class="icon big" style="border-color:var(--accent);color:var(--accent)">◈</div>
+            </div>
+            <div class="lbl" style="font-size:18px;margin-top:8px">Proxmox Assistant</div>
+            <div class="lbl muted smol">node 192.168.0.91 · agent on pi .134</div>
+          </div>
+
+          <div class="cards mt">
+            <div class="card"><div class="kicker">Inventory</div><div class="big">3 nodes · 11 VMs</div><span class="chip"><span class="dot ok"></span>all reachable</span></div>
+            <div class="card"><div class="kicker">Backups</div><div class="big">2 stale</div><span class="chip"><span class="dot warn"></span>last 19h ago</span></div>
+            <div class="card"><div class="kicker">Patches</div><div class="big">14 pending</div><span class="chip"><span class="dot warn"></span>3 security</span></div>
+            <div class="card"><div class="kicker">Security</div><div class="big">B+</div><span class="chip"><span class="dot bad"></span>1 critical</span></div>
+          </div>
+
+          <div class="searchbox sketchy mt" style="margin-top:16px">
+            <span class="lbl muted grow">Ask anything — “are my backups healthy?”</span>
+            <span class="send">➜</span>
+          </div>
+          <div class="row wrap" style="justify-content:center;margin-top:12px">
+            <span class="chip">Check patches</span>
+            <span class="chip">Backup status</span>
+            <span class="chip">Security audit</span>
+          </div>
+        </div>
+        <div class="note hideable">Tap a card → it just types the question into chat. One entry point.</div>
+        <div class="caption">A · home</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Ops console</div>
+        <div class="col-note">Same chat box, but a live console strip is always on — denser, “control room” feel.</div>
+        <div class="frame">
+          <div class="statusbar"><span>9:41 · pve-assistant.lan</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div class="row between" style="padding:2px 4px 6px">
+            <div class="row" style="gap:8px"><div class="icon" style="border-color:var(--accent);color:var(--accent)">◈</div><span class="lbl">Proxmox Assistant</span></div>
+            <span class="chip"><span class="dot ok"></span>online</span>
+          </div>
+
+          <div class="d-box" style="padding:9px 10px">
+            <div class="row wrap" style="gap:7px">
+              <span class="chip"><span class="dot ok"></span>3 nodes / 11 VMs</span>
+              <span class="chip"><span class="dot warn"></span>2 backups stale</span>
+              <span class="chip"><span class="dot warn"></span>14 patches</span>
+              <span class="chip"><span class="dot bad"></span>sec B+ · 1 crit</span>
+            </div>
+          </div>
+
+          <div class="searchbox mt">
+            <span class="lbl muted grow">Ask the agent…</span>
+            <span class="send">➜</span>
+          </div>
+          <div class="row wrap" style="margin-top:10px">
+            <span class="chip">get_inventory</span>
+            <span class="chip">check_patches</span>
+            <span class="chip">security_audit</span>
+          </div>
+
+          <div class="consolestrip">
+            <div class="term-head"><span>▌ tool log — live</span><span>auto-scroll</span></div>
+            <div class="term">
+              <div class="ln"><span class="mut">09:40:58</span> <span class="t">[tool]</span> check_pbs() <span class="ok">✓ ok</span></div>
+              <div class="ln"><span class="mut">09:41:02</span> <span class="t">[tool]</span> check_backups() <span class="ok">✓</span> 2 stale</div>
+              <div class="ln"><span class="cur">▌</span> idle — waiting for prompt</div>
+            </div>
+          </div>
+        </div>
+        <div class="note hideable">Console strip is pinned to the bottom on every screen. Power-user signal.</div>
+        <div class="caption">B · home</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== CHAT =================== -->
+  <section class="screen" data-screen="chat">
+    <div class="screen-head">A tool call mid-flight — <span class="q">where does the [tool] log live, and where does the result land?</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline conversational</div>
+        <div class="col-note">Tool log + result render inline, right in the conversation stream.</div>
+        <div class="frame">
+          <div class="statusbar"><span>check patches</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div class="bubble me"><span class="lbl">Any patches I should worry about?</span></div>
+
+          <div class="row" style="gap:8px;margin:10px 0 4px"><span class="av ai">AI</span><span class="lbl muted smol">running a tool…</span></div>
+
+          <div class="d-box" style="padding:0;overflow:hidden">
+            <div class="term">
+              <div class="ln"><span class="t">[tool]</span> check_patches(node="0.91")</div>
+              <div class="ln"><span class="mut">› ssh apt list --upgradable</span></div>
+              <div class="ln"><span class="ok">✓ 14 upgradable · 3 security</span> <span class="cur">▌</span></div>
+            </div>
+          </div>
+
+          <div class="bubble ai mt">
+            <span class="lbl">14 packages pending — <b>3 are security</b> (openssl, libssl, sudo). Want me to apply just the security ones?</span>
+            <div class="d-box alt" style="margin:9px 0 2px;padding:9px">
+              <div class="row between"><span class="kicker">Patch report</span><span class="chip">view table ▸</span></div>
+              <div class="bar w80 mt"></div><div class="bar sm w50 mt"></div>
+            </div>
+            <div class="row" style="margin-top:8px"><span class="chip" style="border-color:var(--accent);color:var(--accent)">Apply security (3)</span><span class="chip">Dismiss</span></div>
+          </div>
+        </div>
+        <div class="note hideable">Everything is one scroll. Result card expands inline (see Patches tab).</div>
+        <div class="caption">A · chat</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Ops console</div>
+        <div class="col-note">Chat stays clean; raw tool calls stream to the pinned console; tables open in a drawer.</div>
+        <div class="frame">
+          <div class="statusbar"><span>check patches</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div class="bubble me"><span class="lbl">Any patches I should worry about?</span></div>
+          <div class="bubble ai mt">
+            <span class="lbl">Found <b>14 pending</b>, 3 security. Opening the report…</span>
+            <div class="row" style="margin-top:8px"><span class="chip" style="border-color:var(--accent);color:var(--accent)">Open patch report ▸</span></div>
+          </div>
+          <div class="row" style="gap:8px;margin-top:10px"><span class="av ai">AI</span><span class="bar w70" style="margin-top:8px"></span></div>
+
+          <div class="consolestrip">
+            <div class="term-head"><span>▌ tool log — live</span><span>3 calls</span></div>
+            <div class="term">
+              <div class="ln"><span class="mut">09:41:10</span> <span class="t">[tool]</span> check_patches(node="0.91")</div>
+              <div class="ln"><span class="mut">09:41:11</span> <span class="mut">› ssh apt list --upgradable</span></div>
+              <div class="ln"><span class="ok">✓ 14 upgradable · 3 security</span> <span class="cur">▌</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="note hideable">Two register split: friendly chat vs. raw console. Result → drawer (Patches tab).</div>
+        <div class="caption">B · chat</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== INVENTORY =================== -->
+  <section class="screen" data-screen="inventory">
+    <div class="screen-head">get_inventory — <span class="q">inline result card vs. full-screen drawer.</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline card</div>
+        <div class="col-note">Markdown table renders as a compact card inside the chat bubble.</div>
+        <div class="frame">
+          <div class="statusbar"><span>inventory</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble me"><span class="lbl">What’s running?</span></div>
+          <div class="bubble ai mt" style="max-width:100%">
+            <span class="lbl">3 nodes, 11 VMs — all reachable:</span>
+            <div class="d-box alt" style="margin-top:9px;padding:8px 6px">
+              <table class="tbl">
+                <tr><th>VM</th><th>Node</th><th>State</th><th>CPU</th></tr>
+                <tr><td class="mono">101 web</td><td class="mono">pve-1</td><td><span class="dot ok"></span> run</td><td>4 / 12%</td></tr>
+                <tr><td class="mono">102 db</td><td class="mono">pve-1</td><td><span class="dot ok"></span> run</td><td>8 / 41%</td></tr>
+                <tr><td class="mono">103 dns</td><td class="mono">pve-2</td><td><span class="dot ok"></span> run</td><td>1 / 3%</td></tr>
+                <tr><td class="mono">110 bak</td><td class="mono">pve-3</td><td><span class="dot warn"></span> stop</td><td>—</td></tr>
+              </table>
+            </div>
+            <div class="row" style="margin-top:8px"><span class="chip">Show all 11 ▾</span><span class="chip">Copy markdown</span></div>
+          </div>
+        </div>
+        <div class="note hideable">Long tables get a “show all” to keep the stream short.</div>
+        <div class="caption">A · inventory</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Drawer panel</div>
+        <div class="col-note">Result slides up over chat as a dedicated, scrollable panel.</div>
+        <div class="frame drawer-wrap" style="min-height:520px">
+          <div class="statusbar"><span>inventory</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble me"><span class="lbl">What’s running?</span></div>
+          <div class="bubble ai mt"><span class="bar w70"></span></div>
+          <div class="scrim"></div>
+          <div class="drawer">
+            <div class="grab"></div>
+            <div class="row between" style="margin-bottom:8px"><span class="lbl">Inventory · 3 nodes / 11 VMs</span><span class="chip">close ✕</span></div>
+            <div class="row wrap" style="gap:7px;margin-bottom:8px"><span class="chip"><span class="dot ok"></span>10 running</span><span class="chip"><span class="dot warn"></span>1 stopped</span></div>
+            <table class="tbl">
+              <tr><th>VMID</th><th>Name</th><th>Node</th><th>State</th><th>Mem</th></tr>
+              <tr><td class="mono">101</td><td>web</td><td class="mono">pve-1</td><td><span class="dot ok"></span> run</td><td>2.1G</td></tr>
+              <tr><td class="mono">102</td><td>db</td><td class="mono">pve-1</td><td><span class="dot ok"></span> run</td><td>6.4G</td></tr>
+              <tr><td class="mono">103</td><td>dns</td><td class="mono">pve-2</td><td><span class="dot ok"></span> run</td><td>512M</td></tr>
+              <tr><td class="mono">104</td><td>media</td><td class="mono">pve-2</td><td><span class="dot ok"></span> run</td><td>3.0G</td></tr>
+              <tr><td class="mono">110</td><td>bak</td><td class="mono">pve-3</td><td><span class="dot warn"></span> stop</td><td>—</td></tr>
+            </table>
+            <div class="bar sm w60 mt"></div>
+          </div>
+        </div>
+        <div class="note hideable">Drawer = full table room without losing the chat behind it.</div>
+        <div class="caption">B · inventory</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== PATCHES =================== -->
+  <section class="screen" data-screen="patches">
+    <div class="screen-head">check_patches / apply_patches — <span class="q">the report + a destructive action.</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline card</div>
+        <div class="col-note">Apply button lives with the result; confirm inline.</div>
+        <div class="frame">
+          <div class="statusbar"><span>patches</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble ai" style="max-width:100%">
+            <div class="row between"><span class="lbl">Patch report · pve-1</span><span class="chip"><span class="dot warn"></span>14 pending</span></div>
+            <div class="d-box alt" style="margin-top:9px;padding:8px 6px">
+              <table class="tbl">
+                <tr><th>Package</th><th>→ Version</th><th>Type</th></tr>
+                <tr><td class="mono">openssl</td><td class="mono">3.0.14</td><td><span class="sev-label crit">security</span></td></tr>
+                <tr><td class="mono">libssl3</td><td class="mono">3.0.14</td><td><span class="sev-label crit">security</span></td></tr>
+                <tr><td class="mono">sudo</td><td class="mono">1.9.15</td><td><span class="sev-label crit">security</span></td></tr>
+                <tr><td class="mono">curl</td><td class="mono">8.5.0</td><td><span class="sev-label muted" style="color:var(--d-muted)">routine</span></td></tr>
+              </table>
+            </div>
+            <div class="d-box sketchy" style="margin-top:9px;border-color:var(--accent)">
+              <span class="lbl">⚠ apply_patches reboots if kernel changes.</span>
+              <div class="row" style="margin-top:8px"><span class="chip" style="border-color:var(--accent);color:var(--accent)">Apply security (3)</span><span class="chip">Apply all (14)</span><span class="chip">Dry run</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="note hideable">Severity shown as text labels in the Type column (icons+labels system).</div>
+        <div class="caption">A · patches</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Drawer + live apply</div>
+        <div class="col-note">Apply streams progress into the console strip below.</div>
+        <div class="frame drawer-wrap" style="min-height:520px">
+          <div class="statusbar"><span>patches</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble ai"><span class="bar w60"></span></div>
+          <div class="scrim"></div>
+          <div class="drawer" style="bottom:96px">
+            <div class="grab"></div>
+            <div class="row between" style="margin-bottom:8px"><span class="lbl">Patch report</span><span class="chip">close ✕</span></div>
+            <table class="tbl">
+              <tr><th>Package</th><th>Type</th><th></th></tr>
+              <tr><td class="mono">openssl</td><td><span class="sev-label crit">security</span></td><td><span class="chip smol">▣</span></td></tr>
+              <tr><td class="mono">libssl3</td><td><span class="sev-label crit">security</span></td><td><span class="chip smol">▣</span></td></tr>
+              <tr><td class="mono">sudo</td><td><span class="sev-label crit">security</span></td><td><span class="chip smol">▣</span></td></tr>
+              <tr><td class="mono">curl</td><td><span class="sev-label" style="color:var(--d-muted)">routine</span></td><td><span class="chip smol">▢</span></td></tr>
+            </table>
+            <div class="row" style="margin-top:10px"><span class="chip" style="border-color:var(--accent);color:var(--accent)">Apply selected (3)</span></div>
+          </div>
+          <div class="consolestrip">
+            <div class="term-head"><span>▌ apply_patches — running</span><span>2/3</span></div>
+            <div class="term">
+              <div class="ln"><span class="t">[tool]</span> apply_patches(security)</div>
+              <div class="ln"><span class="ok">✓ openssl</span> <span class="ok">✓ libssl3</span> <span class="cur">▌ sudo…</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="note hideable">Checkboxes pick packages; the actual apply log is right there, live.</div>
+        <div class="caption">B · patches</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== BACKUPS =================== -->
+  <section class="screen" data-screen="backups">
+    <div class="screen-head">check_backups + check_pbs — <span class="q">health at a glance, freshness front and center.</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline card</div>
+        <div class="col-note">Stale rows flagged with a warning dot; summary line on top.</div>
+        <div class="frame">
+          <div class="statusbar"><span>backups</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble me"><span class="lbl">Are my backups healthy?</span></div>
+          <div class="bubble ai mt" style="max-width:100%">
+            <span class="lbl"><b>9 of 11</b> backed up in the last 24h. 2 are stale:</span>
+            <div class="d-box alt" style="margin-top:9px;padding:8px 6px">
+              <table class="tbl">
+                <tr><th>VM</th><th>Last backup</th><th>Size</th><th></th></tr>
+                <tr><td class="mono">101 web</td><td>2h ago</td><td>2.1G</td><td><span class="dot ok"></span></td></tr>
+                <tr><td class="mono">102 db</td><td>2h ago</td><td>6.0G</td><td><span class="dot ok"></span></td></tr>
+                <tr><td class="mono">110 bak</td><td>19h ago</td><td>—</td><td><span class="dot warn"></span></td></tr>
+                <tr><td class="mono">115 git</td><td>3d ago</td><td>0.8G</td><td><span class="dot bad"></span></td></tr>
+              </table>
+            </div>
+            <div class="row between" style="margin-top:9px">
+              <span class="chip"><span class="dot ok"></span>PBS datastore 61% · GC ok</span>
+              <span class="chip" style="border-color:var(--accent);color:var(--accent)">Run backup now</span>
+            </div>
+          </div>
+        </div>
+        <div class="note hideable">PBS check folded into the same answer as a one-line health chip.</div>
+        <div class="caption">A · backups</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Drawer + PBS panel</div>
+        <div class="col-note">Backups and PBS get their own sub-cards; more room to show the datastore.</div>
+        <div class="frame drawer-wrap" style="min-height:520px">
+          <div class="statusbar"><span>backups</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble me"><span class="lbl">Backup health?</span></div>
+          <div class="bubble ai mt"><span class="bar w60"></span></div>
+          <div class="scrim"></div>
+          <div class="drawer">
+            <div class="grab"></div>
+            <div class="row between" style="margin-bottom:9px"><span class="lbl">Backup health</span><span class="chip">close ✕</span></div>
+            <div class="cards" style="margin-bottom:9px">
+              <div class="card"><div class="kicker">Coverage</div><div class="big">9 / 11</div><span class="chip"><span class="dot warn"></span>2 stale</span></div>
+              <div class="card"><div class="kicker">PBS datastore</div><div class="big">61%</div><span class="chip"><span class="dot ok"></span>GC ok · verified</span></div>
+            </div>
+            <table class="tbl">
+              <tr><th>VM</th><th>Last</th><th>Status</th></tr>
+              <tr><td class="mono">101 web</td><td>2h</td><td><span class="dot ok"></span> fresh</td></tr>
+              <tr><td class="mono">110 bak</td><td>19h</td><td><span class="dot warn"></span> stale</td></tr>
+              <tr><td class="mono">115 git</td><td>3d</td><td><span class="dot bad"></span> overdue</td></tr>
+            </table>
+            <div class="row" style="margin-top:10px"><span class="chip" style="border-color:var(--accent);color:var(--accent)">Backup stale (2)</span></div>
+          </div>
+        </div>
+        <div class="note hideable">Two stat cards make freshness + PBS capacity scannable.</div>
+        <div class="caption">B · backups</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== SECURITY =================== -->
+  <section class="screen" data-screen="security">
+    <div class="screen-head">security_audit — <span class="q">severity reads via icon + label (your pick), not just color.</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Inline findings list</div>
+        <div class="col-note">Grade up top, findings as icon+label rows in the chat bubble.</div>
+        <div class="frame">
+          <div class="statusbar"><span>security</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble ai" style="max-width:100%">
+            <div class="row between"><span class="lbl">Security audit · score</span><span class="chip" style="border-color:var(--accent);color:var(--accent)">B+</span></div>
+            <div class="d-box alt" style="margin-top:9px;padding:4px 8px">
+              <div class="sev"><span class="glyph g-crit">▲</span><div class="grow"><span class="sev-label crit">Critical</span><div class="lbl">Root SSH login enabled on pve-1</div><span class="lbl muted smol">PermitRootLogin yes</span></div></div>
+              <div class="sev"><span class="glyph g-high">●</span><div class="grow"><span class="sev-label high">High</span><div class="lbl">3 security patches unapplied</div></div></div>
+              <div class="sev"><span class="glyph g-med">◆</span><div class="grow"><span class="sev-label med">Medium</span><div class="lbl">Firewall disabled on 2 VMs</div></div></div>
+              <div class="sev"><span class="glyph g-low">○</span><div class="grow"><span class="sev-label low">Low</span><div class="lbl">No 2FA on web UI</div></div></div>
+            </div>
+            <div class="row" style="margin-top:8px"><span class="chip">Fix critical ▸</span><span class="chip">Full report</span></div>
+          </div>
+        </div>
+        <div class="note hideable">Glyph shape + colored label + text = readable even if color-blind or on a phone in sun.</div>
+        <div class="caption">A · security</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Drawer, grouped by severity</div>
+        <div class="col-note">Counts header, then the same icon+label rows in a scrollable panel.</div>
+        <div class="frame drawer-wrap" style="min-height:520px">
+          <div class="statusbar"><span>security</span><div class="dots"><i></i><i></i><i></i></div></div>
+          <div class="bubble ai"><span class="bar w50"></span></div>
+          <div class="scrim"></div>
+          <div class="drawer">
+            <div class="grab"></div>
+            <div class="row between" style="margin-bottom:8px"><span class="lbl">Security audit · B+</span><span class="chip">close ✕</span></div>
+            <div class="row wrap" style="gap:7px;margin-bottom:6px">
+              <span class="chip"><span class="glyph g-crit" style="width:18px;height:18px;font-size:10px">▲</span>1 crit</span>
+              <span class="chip"><span class="glyph g-high" style="width:18px;height:18px;font-size:10px">●</span>1 high</span>
+              <span class="chip"><span class="glyph g-med" style="width:18px;height:18px;font-size:10px">◆</span>1 med</span>
+              <span class="chip"><span class="glyph g-low" style="width:18px;height:18px;font-size:10px">○</span>1 low</span>
+            </div>
+            <div class="sev"><span class="glyph g-crit">▲</span><div class="grow"><span class="sev-label crit">Critical</span><div class="lbl">Root SSH login enabled</div><span class="lbl muted smol">pve-1 · sshd_config</span></div><span class="chip smol">fix</span></div>
+            <div class="sev"><span class="glyph g-high">●</span><div class="grow"><span class="sev-label high">High</span><div class="lbl">3 security patches unapplied</div></div><span class="chip smol">fix</span></div>
+            <div class="sev"><span class="glyph g-med">◆</span><div class="grow"><span class="sev-label med">Medium</span><div class="lbl">Firewall off on 2 VMs</div></div><span class="chip smol">fix</span></div>
+            <div class="sev"><span class="glyph g-low">○</span><div class="grow"><span class="sev-label low">Low</span><div class="lbl">No 2FA on web UI</div></div><span class="chip smol">fix</span></div>
+          </div>
+        </div>
+        <div class="note hideable">Each finding gets a direct “fix” affordance the agent can act on.</div>
+        <div class="caption">B · security</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================== SETTINGS =================== -->
+  <section class="screen" data-screen="settings">
+    <div class="screen-head">Settings — <span class="q">LLM provider switch + env var editor (served from the Pi).</span></div>
+    <div class="stage">
+
+      <!-- A -->
+      <div>
+        <div class="col-label"><span class="pill">A</span>Simple form</div>
+        <div class="col-note">One column, one thing at a time. Segmented provider switch.</div>
+        <div class="frame">
+          <div class="statusbar"><span>settings</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div class="kicker" style="margin:6px 4px">LLM provider</div>
+          <div class="seg"><div class="on">Claude</div><div>OpenAI</div><div>Ollama</div></div>
+
+          <div class="d-box mt">
+            <div class="env"><span class="k">ANTHROPIC_API_KEY</span><span class="v">sk-ant-•••••••• 4a2</span></div>
+            <div class="env"><span class="k">MODEL</span><span class="v">claude-sonnet-4</span></div>
+            <div class="env" style="border-bottom:none"><span class="k">MAX_TOKENS</span><span class="v">4096</span></div>
+          </div>
+
+          <div class="kicker" style="margin:12px 4px 4px">Connection</div>
+          <div class="d-box">
+            <div class="env"><span class="k">PROXMOX_HOST</span><span class="v">192.168.0.91</span></div>
+            <div class="env"><span class="k">SSH_USER</span><span class="v">root</span></div>
+            <div class="env" style="border-bottom:none"><span class="k">PBS_HOST</span><span class="v">192.168.0.91:8007</span></div>
+          </div>
+
+          <div class="row between mt">
+            <span class="chip"><span class="dot ok"></span>API reachable</span>
+            <span class="chip" style="border-color:var(--accent);color:var(--accent)">Save & reload</span>
+          </div>
+        </div>
+        <div class="note hideable">Keys masked; values map straight to the .env the Pi reads.</div>
+        <div class="caption">A · settings</div>
+      </div>
+
+      <!-- B -->
+      <div>
+        <div class="col-label"><span class="pill">B</span>Provider cards + raw env</div>
+        <div class="col-note">Pick a provider as a card, then a collapsible raw .env block for power users.</div>
+        <div class="frame">
+          <div class="statusbar"><span>settings</span><div class="dots"><i></i><i></i><i></i></div></div>
+
+          <div class="kicker" style="margin:6px 4px">Provider</div>
+          <div class="cards">
+            <div class="card sketchy" style="border-color:var(--accent)"><div class="row between"><span class="lbl">Claude</span><span class="dot acc"></span></div><span class="lbl muted smol">sonnet-4 · cloud</span></div>
+            <div class="card"><span class="lbl">OpenAI</span><div class="lbl muted smol">gpt-4o · cloud</div></div>
+            <div class="card"><span class="lbl">Ollama</span><div class="lbl muted smol">local · llama3</div></div>
+            <div class="card"><div class="row between"><span class="lbl muted">+ add</span></div></div>
+          </div>
+
+          <div class="row between" style="margin:12px 4px 4px"><span class="kicker">.env (raw)</span><span class="chip smol">edit ▾</span></div>
+          <div class="term">
+            <div class="ln"><span class="mut">ANTHROPIC_API_KEY=</span><span class="cur">sk-ant-••••4a2</span></div>
+            <div class="ln"><span class="mut">PROXMOX_HOST=</span>192.168.0.91</div>
+            <div class="ln"><span class="mut">AGENT_BIND=</span>192.168.0.134:8080</div>
+            <div class="ln"><span class="mut">LOG_LEVEL=</span>info</div>
+          </div>
+
+          <div class="row between mt">
+            <span class="chip"><span class="dot ok"></span>3 tools healthy</span>
+            <span class="chip" style="border-color:var(--accent);color:var(--accent)">Apply</span>
+          </div>
+        </div>
+        <div class="note hideable">Cards for the common switch; raw .env textarea for the tinkerer who SSH’d into the Pi anyway.</div>
+        <div class="caption">B · settings</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="caption" style="margin-top:32px">Low-fi wireframes · structure &amp; flow only · final UI is dark, FastAPI + vanilla JS, single-file friendly.</div>
+
+</div>
+
+<script>
+  const tabs = document.getElementById('tabs');
+  const screens = document.querySelectorAll('.screen');
+  tabs.addEventListener('click', e => {
+    const b = e.target.closest('.tab'); if(!b) return;
+    tabs.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t===b));
+    const s = b.dataset.s;
+    screens.forEach(sc => sc.classList.toggle('active', sc.dataset.screen===s));
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+
+  const annotBtn = document.getElementById('annotBtn');
+  annotBtn.addEventListener('click', () => {
+    const off = document.body.classList.toggle('annot-off');
+    annotBtn.textContent = 'Annotations: ' + (off ? 'OFF' : 'ON');
+    annotBtn.classList.toggle('off', off);
+  });
+</script>
+</body>
+</html>

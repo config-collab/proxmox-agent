@@ -1,0 +1,17 @@
+{
+  "name": "Proxmox Assistant",
+  "short_name": "PVE Agent",
+  "description": "AI-powered Proxmox homelab manager",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e1014",
+  "theme_color": "#0e1014",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2312151b'/><text y='.9em' font-size='72' x='14' fill='%23f0883e'>&#9672;</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
