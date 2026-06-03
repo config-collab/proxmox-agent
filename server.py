@@ -35,11 +35,42 @@ from pydantic import BaseModel
 import config
 config._load_env()
 
-import inventory as inv_mod
-import tools as tools_mod
+# NOTE: Heavy modules are lazy-loaded to avoid startup hang
 import audit
-from proxmox_api import ProxmoxAPI
-from ssh_client import SSHClient
+
+# Lazy-loaded on first use
+_tools_mod = None
+_inv_mod = None
+_proxmox_api = None
+_ssh_client = None
+
+def _ensure_tools():
+    global _tools_mod
+    if _tools_mod is None:
+        import tools as tools_mod_tmp
+        _tools_mod = tools_mod_tmp
+    return _tools_mod
+
+def _ensure_inventory():
+    global _inv_mod
+    if _inv_mod is None:
+        import inventory as inv_mod_tmp
+        _inv_mod = inv_mod_tmp
+    return _inv_mod
+
+def _get_proxmox_api():
+    global _proxmox_api
+    if _proxmox_api is None:
+        from proxmox_api import ProxmoxAPI as PA
+        _proxmox_api = PA
+    return _proxmox_api
+
+def _get_ssh_client():
+    global _ssh_client
+    if _ssh_client is None:
+        from ssh_client import SSHClient as SC
+        _ssh_client = SC
+    return _ssh_client
 
 app = FastAPI()
 GUI  = Path(__file__).parent / "gui"
@@ -89,7 +120,8 @@ async def api_run_script(body: dict):
     if not run_cmd or "curl" not in run_cmd:
         return {"ok": False, "error": "Invalid script command."}
     try:
-        with SSHClient() as ssh:
+        SSH = _get_ssh_client()
+        with SSH() as ssh:
             out, err, rc = ssh.run(run_cmd, check=False, timeout=300)
         audit.log("helper_script.run", run_cmd[:80], outcome="ok" if rc == 0 else f"exit {rc}", reversible=False)
         audit.flush()
@@ -545,7 +577,8 @@ async def _stream_llm_loop(
     )
     msgs = [{"role": "user", "content": f"[system]{system}[/system]\n\n{message}",
              "_system_seed": True}]
-    schemas = tools_mod.all_schemas()
+    tools = _ensure_tools()
+    schemas = tools.all_schemas()
 
     for _ in range(6):
         text, tool_calls = await loop.run_in_executor(None, lambda: llm_mod.chat(msgs, schemas))
@@ -608,7 +641,8 @@ async def _protect_before_change(
     label = f"pre-patch-{datetime.datetime.now().strftime('%Y%m%d-%H%M')}"
 
     def _find_guest():
-        api = ProxmoxAPI(); api.login()
+        PVE = _get_proxmox_api()
+        api = PVE(); api.login()
         for gtype, list_fn in [("qemu", api.vms), ("lxc", api.containers)]:
             guests = list_fn(node)
             target = next((g for g in guests if g.get("name") == guest_name), None)
@@ -692,7 +726,8 @@ def _call_tool(name: str, inputs: dict) -> tuple[str, dict | None]:
     if name == "security_audit":
         return _run_security(inputs)
     if name == "get_metrics":
-        raw = tools_mod.dispatch(name, inputs)
+        tools = _ensure_tools()
+        raw = tools.dispatch(name, inputs)
         return raw, {"kind": "metrics", "data": {"raw": raw, "name": inputs.get("name",""), "timeframe": inputs.get("timeframe","hour")}, "summary": f"metrics for {inputs.get('name','')}"}
 
     if name == "search_helper_scripts":
@@ -700,14 +735,16 @@ def _call_tool(name: str, inputs: dict) -> tuple[str, dict | None]:
         query  = inputs.get("query", "")
         top_k  = int(inputs.get("top_k", 6))
         scripts = hs_search(query, top_k)
-        raw    = tools_mod.dispatch(name, inputs)
+        tools = _ensure_tools()
+        raw    = tools.dispatch(name, inputs)
         return raw, {
             "kind": "helpers",
             "data": {"scripts": scripts, "query": query},
             "summary": f"{len(scripts)} scripts found for '{query}'",
         }
     # check_backups / check_pbs / search_* — dispatch returns markdown, wrap as raw
-    raw = tools_mod.dispatch(name, inputs)
+    tools = _ensure_tools()
+    raw = tools.dispatch(name, inputs)
     kind = {"check_backups": "backups", "check_pbs": "pbs"}.get(name)
     if kind:
         return raw, {"kind": kind, "data": {"raw": raw}, "summary": ""}
@@ -716,10 +753,14 @@ def _call_tool(name: str, inputs: dict) -> tuple[str, dict | None]:
 
 def _run_inventory(inputs: dict) -> tuple[str, dict]:
     node = inputs.get("node", "pve")
-    api = ProxmoxAPI(); api.login()
-    with SSHClient() as ssh:
-        snap = inv_mod.collect(api, ssh, node=node)
-    raw = inv_mod.render(snap)
+    PVE = _get_proxmox_api()
+    api = PVE(); api.login()
+    SSH = _get_ssh_client()
+    with SSH() as ssh:
+        inventory = _ensure_inventory()
+        snap = inventory.collect(api, ssh, node=node)
+    inventory = _ensure_inventory()
+    raw = inventory.render(snap)
     audit.log("inventory.collect", node, outcome="ok", reversible=True)
     conns = config.guest_connections()
     guests = []
@@ -894,3 +935,8 @@ def _md_html(text: str) -> str:
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
     text = re.sub(r"`(.+?)`",       r'<span class="em">\1</span>', text)
     return text
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080, log_level="info")
