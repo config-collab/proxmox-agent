@@ -1,0 +1,60 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# API keys and tokens
+ANTHROPIC_API_KEY
+sk-*
+ghp_*
+Bearer *
+
+# SSH keys and private data
+*.pem
+*.key
+*_id_ed25519*
+/keys/
+~/.ssh/
+
+# Local paths
+SSH_KEYS_DIR
+D:\SSH Keys
+/home/pi/.proxmox-agent/keys
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+.pytest_cache/
+.coverage
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/tmp/
+/logs/
+
+# Local state
+.proxmox-agent/
+audit.jsonl
+env_profile.json
+
+# Build artifacts
+/dist/
+/build/
+
+# Dev/test files
+test_*.py
+conftest.py
