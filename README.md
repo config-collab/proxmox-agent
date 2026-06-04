@@ -8,6 +8,7 @@
 
 ## 🎯 What It Does
 
+### Interactive Mode (Web UI / CLI)
 Ask in plain English. The agent:
 - Queries your Proxmox environment (inventory, patches, backups, security)
 - Consults official docs + community forums + CVE databases before recommending
@@ -30,6 +31,22 @@ Ask in plain English. The agent:
 → Scans open ports, SSH config, firewall rules, CVEs
 → Links to official hardening guides + community solutions
 ```
+
+### Daemon Mode (BETA - 24/7 Monitoring)
+Lightweight background service for continuous infrastructure monitoring:
+
+- **Disk Capacity Prediction** — Forecasts when datastores fill up + identifies culprits (VMs, backups, snapshots)
+- **Threat Detection** — Real-time breach risk detection (SSH brute force, privilege escalation, port scans, suspicious processes)
+- **Disk Health Prediction** — SMART-based hard drive failure prediction with health scoring
+- **Daily Health Reports** — Comprehensive infrastructure status (disk trends, backup age, PBS health, security posture, service status)
+
+**Runs continuously with:**
+- Real-time alerts via ntfy.sh (rate-limited to prevent spam)
+- Full audit logging
+- Read-only monitoring (zero autonomous modifications)
+- Easy enable/disable (`DAEMON_ENABLED=0`)
+
+See [QUICK_START.md](QUICK_START.md) for 5-minute installation.
 
 ---
 
@@ -349,7 +366,7 @@ See [`.env.example`](.env.example) for full documented template.
 
 ---
 
-## 🛠️ Tools (26 Total)
+## 🛠️ Tools (29 Total)
 
 ### Inventory & Status
 - `get_inventory()` – List all VMs/LXCs with IPs
@@ -366,10 +383,20 @@ See [`.env.example`](.env.example) for full documented template.
 - `check_pbs()` – Proxmox Backup Server status
 - `run_backup_now()` – Trigger backup, wait for completion
 
+### Prediction & Intelligence (NEW)
+- `predict_disk_capacity()` – Forecast disk fill dates + identify culprits
+- `predict_disk_failure()` – SMART-based hard drive failure prediction
+- `detect_breach_risk()` – Real-time threat detection (breach attempts, anomalies)
+- `daily_health_check()` – Comprehensive infrastructure status report
+
 ### VM/LXC Management
 - `manage_vm()` – Start, stop, restart, status
 - `manage_snapshots()` – List, create, rollback, delete
 - `create_container()` – LXC provisioning with dry-run
+
+### Diagnostics & Repair
+- `diagnose_pbs_issues()` – PBS health analysis
+- `fix_pbs_issue()` – PBS repairs (GC permissions, email config)
 
 ### Networking & Security
 - `search_docs()` – Proxmox official docs
@@ -527,11 +554,25 @@ A: No data leaves your network except: LLM API calls (code + reasoning), CVE que
 
 ## 🎯 Roadmap
 
-- [x] Core agent + 26 tools
+### Completed ✅
+- [x] Core agent + 29 tools
 - [x] Multi-source RAG (docs + forums + CVE + Reddit)
 - [x] Security framework (autonomy + protection modes)
 - [x] Audit logging + reasoning traces
 - [x] Web UI + PWA support
+- [x] **Daemon mode (BETA)** — 24/7 monitoring with 4 killer features
+  - [x] Disk capacity prediction
+  - [x] Threat detection & breach risk
+  - [x] Disk health & failure prediction
+  - [x] Daily comprehensive health reports
+
+### In Progress 🚀
+- [ ] Community feedback cycle (gather usage data + feature requests)
+- [ ] Autonomous low-risk fixes (based on community demand)
+- [ ] Enhanced prediction (ML-based forecasting)
+- [ ] Slack/GitHub integrations (rich notifications)
+
+### Planned 📋
 - [ ] MCP server wrapper (for Cursor IDE)
 - [ ] Helm chart for Kubernetes
 - [ ] Ansible module for fleet management
